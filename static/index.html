@@ -6,20 +6,23 @@
         <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript">
 
+            var client_id = '1093471737235-frq9mvlpdsv14dcuvcatvun6jq6ti0ku.apps.googleusercontent.com';
+            var scope = 'https://www.googleapis.com/auth/androidpublisher';
+;
+
             function startAuth(){
                 URL = 'https://accounts.google.com/o/oauth2/v2/auth?';
                 URL += 'response_type=code';
-                URL += '&client_id=' + encodeURI('1093471737235-frq9mvlpdsv14dcuvcatvun6jq6ti0ku.apps.googleusercontent.com');
+                URL += '&client_id=' + encodeURI(client_id);
                 URL += '&redirect_uri=' + encodeURI('http://www.refreshtoken.com/callback_handler');
-                URL += '&scope=' + encodeURI('https://www.googleapis.com/auth/androidpublisher');
-                URL += '&state=' + encodeURI('website_UUID_for_user');
+                URL += '&scope=' + encodeURI(scope);
+                URL += '&state=' + encodeURI('client_id=' + client_id);
                 URL += '&access_type=offline';
                 URL += '&prompt=' + encodeURI('consent select_account');
 
                 window.location = URL;
             }
 
-            
         </script>
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="GoogleRefreshToken.css" rel="stylesheet" type="text/css">
