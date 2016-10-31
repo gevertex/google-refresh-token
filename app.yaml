@@ -8,3 +8,6 @@ handlers:
 
 - url: /static
   static_dir: static
+
+- url: /callback_handler
+  script: callback_handler.app
