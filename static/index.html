@@ -4,26 +4,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script src="https://apis.google.com/js/api.js"></script>
-        <script>
-            function start() {
-              // 2. Initialize the JavaScript client library.
-              gapi.client.init({
-                'apiKey': 'YOUR_API_KEY',
-                // clientId and scope are optional if auth is not required.
-                'clientId': 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
-                'scope': 'profile',
-              }).then(function() {
-                // 3. Initialize and make the API request.
-                return gapi.client.request({
-                  'path': 'https://people.googleapis.com/v1/people/me',
-                })
-              }).then(function(resp) {
-                console.log(resp.result);
-              }, function(reason) {
-                console.log('Error: ' + reason.result.error.message);
-              });
-            };
+        <script type="text/javascript">
+
+            function startAuth(){
+                URL = 'https://accounts.google.com/o/oauth2/v2/auth?';
+                URL += 'response_type=code';
+                URL += '&client_id=' + encodeURI('1093471737235-frq9mvlpdsv14dcuvcatvun6jq6ti0ku.apps.googleusercontent.com');
+                URL += '&redirect_uri=' + encodeURI('http://www.refreshtoken.com/callback_handler');
+                URL += '&scope=' + encodeURI('https://www.googleapis.com/auth/androidpublisher');
+                URL += '&state=' + encodeURI('website_UUID_for_user');
+                URL += '&access_type=offline';
+                URL += '&prompt=' + encodeURI('consent select_account');
+
+                window.location = URL;
+            }
+
+            
         </script>
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="GoogleRefreshToken.css" rel="stylesheet" type="text/css">
@@ -71,7 +67,7 @@
                                                 <label class="control-label" for="exampleInputPassword1"></label>
                                                 <input class="form-control" id="exampleInputPassword1" placeholder="Scopes" type="text">
                                             </div>
-                                            <button class="active btn btn-block btn-sm btn-success" onclick="gapi.load('client', start)">Submit</button>
+                                            <button class="active btn btn-block btn-sm btn-success" onclick="startAuth()">Submit</button>
                                         <!-- </form> -->
                                     </div>
                                 </div>
