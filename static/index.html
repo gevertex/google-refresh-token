@@ -5,23 +5,89 @@
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript">
-
             var client_id = '1093471737235-frq9mvlpdsv14dcuvcatvun6jq6ti0ku.apps.googleusercontent.com';
             var scope = 'https://www.googleapis.com/auth/androidpublisher';
-;
+            var redirectHost = 'http://localhost:8080';
+            <!--var redirectHost = 'http://refreshtoken.com';-->
 
             function startAuth(){
+                var state = {};
+
+                state['client_id'] = client_id;
+                state['stage'] = 1;
+
                 URL = 'https://accounts.google.com/o/oauth2/v2/auth?';
                 URL += 'response_type=code';
                 URL += '&client_id=' + encodeURI(client_id);
-                URL += '&redirect_uri=' + encodeURI('http://www.refreshtoken.com/callback_handler');
+                URL += '&redirect_uri=' + encodeURI(redirectHost + '/static/index.html');
                 URL += '&scope=' + encodeURI(scope);
-                URL += '&state=' + encodeURI('{"client_id":"' + client_id + '"}');
+                URL += '&state=' + encodeURI(JSON.stringify(state));
                 URL += '&access_type=offline';
                 URL += '&prompt=' + encodeURI('consent select_account');
 
                 window.location = URL;
             }
+
+            function onLoad(){
+                var state = getParameterByName('state');
+
+                if (state)
+                    stateObj = JSON.parse(state);
+                else
+                    return;
+
+                if(stateObj.stage){
+                    if (stateObj.stage == 1){
+                        var postParams = {};
+
+                        postParams['code'] = getParameterByName('code');
+                        postParams['client_id'] = stateObj.client_id;
+                        postParams['client_secret'] = 'hNmA6mp3xdZ6AY26AQBhQSxu';
+                        postParams['redirect_uri'] = redirectHost + '/static/index.html';
+                        postParams['grant_type'] = 'authorization_code';
+
+                        post('https://www.googleapis.com/oauth2/v4/token', postParams);
+                    }
+                }
+            }
+
+            function getParameterByName(name, url) {
+                if (!url) {
+                    url = window.location.href;
+                }
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+
+            function post(path, params, method) {
+                method = method || "post"; // Set method to post by default if not specified.
+
+                // The rest of this code assumes you are not using a library.
+                // It can be made less wordy if you use one.
+                var form = document.createElement("form");
+                form.setAttribute("method", method);
+                form.setAttribute("action", path);
+
+                for(var key in params) {
+                    if(params.hasOwnProperty(key)) {
+                        var hiddenField = document.createElement("input");
+                        hiddenField.setAttribute("type", "hidden");
+                        hiddenField.setAttribute("name", key);
+                        hiddenField.setAttribute("value", params[key]);
+
+                        form.appendChild(hiddenField);
+                    }
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            window.onload = onLoad;
 
         </script>
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -62,15 +128,15 @@
                                 <div class="row text-center">
                                     <div class="col-md-6 col-md-offset-3 text-left">
                                         <!-- <form role="form"> -->
-                                            <div class="form-group" id="client_id">
-                                                <label class="control-label" for="exampleInputEmail1"></label>
-                                                <input class="form-control" id="exampleInputEmail1" placeholder="Google OAuth 2.0 Client ID" type="text">
-                                            </div>
-                                            <div class="form-group" id="scopes">
-                                                <label class="control-label" for="exampleInputPassword1"></label>
-                                                <input class="form-control" id="exampleInputPassword1" placeholder="Scopes" type="text">
-                                            </div>
-                                            <button class="active btn btn-block btn-sm btn-success" onclick="startAuth()">Submit</button>
+                                        <div class="form-group" id="client_id">
+                                            <label class="control-label" for="exampleInputEmail1"></label>
+                                            <input class="form-control" id="exampleInputEmail1" placeholder="Google OAuth 2.0 Client ID" type="text">
+                                        </div>
+                                        <div class="form-group" id="scopes">
+                                            <label class="control-label" for="exampleInputPassword1"></label>
+                                            <input class="form-control" id="exampleInputPassword1" placeholder="Scopes" type="text">
+                                        </div>
+                                        <button class="active btn btn-block btn-sm btn-success" onclick="startAuth()">Submit</button>
                                         <!-- </form> -->
                                     </div>
                                 </div>
@@ -88,6 +154,7 @@
                 </div>
             </div>
         </div>
+
         <div class="section">
             <div class="container">
                 <div class="row">
@@ -99,10 +166,11 @@
                     </div>
                     <div class="col-md-12">
                         <h3>Why do I need this?</h3>
-                        <p>Some services (such as those that verify Google Play In App Purchase receipts) do not have a UI and need to have a refresh token generated manually
-                            in order to work. &nbsp;I have a seen all sorts of kludgy solutions for
-                            this, but nothing that "just works". &nbsp;This is that thing that just
-                            works. &nbsp;Enjoy.</p>
+                        <p>Some services (such as those that verify Google Play In App Purchase receipts)
+                            do not have a UI and need to have a refresh token generated manually in
+                            order to work. &nbsp;I have a seen all sorts of kludgy solutions for this,
+                            but nothing that "just works". &nbsp;This is that thing that just works.
+                            &nbsp;Enjoy.</p>
                     </div>
                 </div>
                 <div class="row">
