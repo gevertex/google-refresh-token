@@ -13,6 +13,17 @@
  * }
 */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+
+.string { color: white; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: magenta; }
+
+code {
+    text-align: left;
+}
+
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
