@@ -5,36 +5,45 @@
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript">
-            var client_id = '1093471737235-frq9mvlpdsv14dcuvcatvun6jq6ti0ku.apps.googleusercontent.com';
-            var scope = 'https://www.googleapis.com/auth/androidpublisher';
+
             var redirectHost = 'http://localhost:8080';
             <!--var redirectHost = 'http://refreshtoken.com';-->
 
             function startAuth(){
+                var client_id = document.getElementById('client_id').value;
+                var scopes = document.getElementById('scopes').value;
+                var client_secret = document.getElementById('client_secret').value;
                 var state = {};
 
                 state['client_id'] = client_id;
                 state['stage'] = 1;
+                state['client_secret'] = client_secret;
 
                 URL = 'https://accounts.google.com/o/oauth2/v2/auth?';
                 URL += 'response_type=code';
                 URL += '&client_id=' + encodeURI(client_id);
                 URL += '&redirect_uri=' + encodeURI(redirectHost + '/static/index.html');
-                URL += '&scope=' + encodeURI(scope);
+                URL += '&scope=' + encodeURI(scopes);
                 URL += '&state=' + encodeURI(JSON.stringify(state));
                 URL += '&access_type=offline';
                 URL += '&prompt=' + encodeURI('consent select_account');
+                <!--URL += '&include_granted_scopes=true';-->
 
                 window.location = URL;
             }
 
             function onLoad(){
+
                 var state = getParameterByName('state');
 
                 if (state)
                     stateObj = JSON.parse(state);
-                else
+                else{
+                    document.getElementById('client_id').value = '1093471737235-frq9mvlpdsv14dcuvcatvun6jq6ti0ku.apps.googleusercontent.com';
+                    document.getElementById('scopes').value = 'https://www.googleapis.com/auth/androidpublisher';
+                    document.getElementById('client_secret').value = 'hNmA6mp3xdZ6AY26AQBhQSxu';
                     return;
+                }
 
                 if(stateObj.stage){
                     if (stateObj.stage == 1){
@@ -42,7 +51,7 @@
 
                         postParams['code'] = getParameterByName('code');
                         postParams['client_id'] = stateObj.client_id;
-                        postParams['client_secret'] = 'hNmA6mp3xdZ6AY26AQBhQSxu';
+                        postParams['client_secret'] = stateObj.client_secret;
                         postParams['redirect_uri'] = redirectHost + '/static/index.html';
                         postParams['grant_type'] = 'authorization_code';
 
@@ -128,13 +137,17 @@
                                 <div class="row text-center">
                                     <div class="col-md-6 col-md-offset-3 text-left">
                                         <!-- <form role="form"> -->
-                                        <div class="form-group" id="client_id">
-                                            <label class="control-label" for="exampleInputEmail1"></label>
-                                            <input class="form-control" id="exampleInputEmail1" placeholder="Google OAuth 2.0 Client ID" type="text">
+                                        <div class="form-group">
+                                            <label class="control-label" for="client_id"></label>
+                                            <input class="form-control" id="client_id" placeholder="Google OAuth 2.0 Client ID" type="text">
                                         </div>
-                                        <div class="form-group" id="scopes">
-                                            <label class="control-label" for="exampleInputPassword1"></label>
-                                            <input class="form-control" id="exampleInputPassword1" placeholder="Scopes" type="text">
+                                        <div class="form-group">
+                                            <label class="control-label" for="scopes"></label>
+                                            <input class="form-control" id="scopes" placeholder="Scopes" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="client_secret"></label>
+                                            <input class="form-control" id="client_secret" placeholder="Client Secret" type="text">
                                         </div>
                                         <button class="active btn btn-block btn-sm btn-success" onclick="startAuth()">Submit</button>
                                         <!-- </form> -->
