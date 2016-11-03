@@ -51,7 +51,7 @@
                         postParams['code'] = getParameterByName('code');
                         postParams['client_id'] = stateObj.client_id;
                         postParams['client_secret'] = stateObj.client_secret;
-                        postParams['redirect_uri'] = redirectHost + '/index.html';
+                        postParams['redirect_uri'] = encodeURI(redirectHost + '/index.html');
                         postParams['grant_type'] = 'authorization_code';
 
                         $.post('https://www.googleapis.com/oauth2/v4/token', postParams, function(result){
