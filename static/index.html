@@ -21,7 +21,7 @@
                 URL = 'https://accounts.google.com/o/oauth2/v2/auth?';
                 URL += 'response_type=code';
                 URL += '&client_id=' + encodeURI(client_id);
-                URL += '&redirect_uri=' + encodeURI(redirectHost + '/static/index.html');
+                URL += '&redirect_uri=' + encodeURI(redirectHost + '/index.html');
                 URL += '&scope=' + encodeURI(scopes);
                 URL += '&state=' + encodeURI(JSON.stringify(state));
                 URL += '&access_type=offline';
@@ -51,7 +51,7 @@
                         postParams['code'] = getParameterByName('code');
                         postParams['client_id'] = stateObj.client_id;
                         postParams['client_secret'] = stateObj.client_secret;
-                        postParams['redirect_uri'] = redirectHost + '/static/index.html';
+                        postParams['redirect_uri'] = redirectHost + '/index.html';
                         postParams['grant_type'] = 'authorization_code';
 
                         $.post('https://www.googleapis.com/oauth2/v4/token', postParams, function(result){
@@ -140,6 +140,12 @@
                     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li>
+                                <a href="#security">Security<br></a>
+                            </li>
+                            <li>
+                                <a href="#howto">How To<br></a>
+                            </li>
+                            <li>
                                 <a href="mailto:george.sapp85@gmail.com">Contact<br></a>
                             </li>
                         </ul>
@@ -172,8 +178,7 @@
                                             <label class="control-label" for="client_secret"></label>
                                             <input class="form-control" id="client_secret" placeholder="Client Secret" type="text">
                                         </div>
-                                        <!--
-                                        <div class="radio" id="client_id_type" align="center">
+                                        <!-- <div class="radio" id="client_id_type" align="center">
                                             <label class="radio-inline"><input id="web" type="radio" name="optradio">Web Client ID</label>
                                             <label class="radio-inline"><input id="android" type="radio" name="optradio">Android Client ID</label>
                                             <label class="radio-inline"><input id="other" type="radio" name="optradio">Other</label>
@@ -221,10 +226,17 @@
                             but nothing that "just works". &nbsp;This is that thing that just works.
                             &nbsp;Enjoy.</p>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <p></p>
+                    <div class="col-md-12" id="security">
+                        <h3>A note on Security</h3>
+                        <p contenteditable="true">This site is not hosted with SSL. &nbsp;That may seem concerning, but
+                            it is not needed. &nbsp;This site is run purely with javascript and none
+                            of the information you input is injested into our server. &nbsp;Instead,
+                            SSL requests are made directly to Google's API from your brower. &nbsp;As
+                            a result SSL is not required for this page directly.</p>
+                    </div>
+                    <div class="col-md-12" id="howto">
+                        <h3>How to use this</h3>
+                        <p contenteditable="true">For Web Client IDs, you must add "http://www.refreshtoken.com/index.html" to your&nbsp;Authorized redirect URIs in the Google API Console. &nbsp;Be sure to save it. &nbsp;It will take about 5 minutes for the update to take effect.</p>
                     </div>
                 </div>
             </div>

@@ -6,8 +6,8 @@ handlers:
 - url: /
   script: main.app
 
-- url: /static
+- url: /
   static_dir: static
 
-- url: /callback_handler
-  script: callback_handler.app
+# - url: /callback_handler
+#   script: callback_handler.app
