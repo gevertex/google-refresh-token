@@ -5,7 +5,7 @@
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script type="text/javascript">
-            var redirectHost = 'http://localhost:8080';
+            var redirectHost = 'http://localhost';
             <!--var redirectHost = 'http://refreshtoken.com';-->
 
             function startAuth(){
@@ -21,7 +21,7 @@
                 URL = 'https://accounts.google.com/o/oauth2/v2/auth?';
                 URL += 'response_type=code';
                 URL += '&client_id=' + encodeURI(client_id);
-                URL += '&redirect_uri=' + encodeURI(redirectHost + '/index.html');
+                URL += '&redirect_uri=' + encodeURI(redirectHost);
                 URL += '&scope=' + encodeURI(scopes);
                 URL += '&state=' + encodeURI(JSON.stringify(state));
                 URL += '&access_type=offline';
@@ -51,7 +51,7 @@
                         postParams['code'] = getParameterByName('code');
                         postParams['client_id'] = stateObj.client_id;
                         postParams['client_secret'] = stateObj.client_secret;
-                        postParams['redirect_uri'] = encodeURI(redirectHost + '/index.html');
+                        postParams['redirect_uri'] = encodeURI(redirectHost);
                         postParams['grant_type'] = 'authorization_code';
 
                         $.post('https://www.googleapis.com/oauth2/v4/token', postParams, function(result){
