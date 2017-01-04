@@ -1,7 +1,8 @@
 * How to use
-1. Install google cloud engine
-* https://cloud.google.com/sdk/docs/
+Install google cloud engine @ https://cloud.google.com/sdk/docs/
+cd to the app's root directory
+run the app in developer mode
+sudo dev_appserver.py --port=80 .
 
-2. cd to the app's root directory
-3. run the app in developer mode
-* sudo dev_appserver.py --port=80 .
+
+Disclaimer:  This is a dirty hack.  It works, but it's dirty.  Feel free to contribute.
